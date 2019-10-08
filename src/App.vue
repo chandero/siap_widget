@@ -1,19 +1,16 @@
 <template>
   <div id="app">
     <Reporte></Reporte>
-    <Consulta></Consulta>
   </div>
 </template>
 
 <script>
 import Reporte from "./components/Reporte.vue";
-import Consulta from "./components/Consulta.vue";
 
 export default {
   name: "app",
   components: {
-    Reporte,
-    Consulta
+    Reporte
   }
 };
 </script>

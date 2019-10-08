@@ -3,15 +3,31 @@
     <Content>
       <Form ref="formValidate" :model="reporte" :rules="ruleValidate">
         <Row :gutter="4">
-          <Col span="2">
-            <img src="../assets/icono_correo.png" style="width: 64px;" />
+          <Col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
+            <Row>
+              <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+                <img src="../assets/icono_correo.png" style="width: 64px;" />
+              </Col>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="12"
+                :lg="12"
+                :xl="12"
+                style="text-align: center;"
+              >
+                <span style="font-size: 16px;">
+                  Reporte aquí posibles daños
+                </span>
+              </Col>
+            </Row>
+            <Row>
+              <Col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+                <Consulta />
+              </Col>
+            </Row>
           </Col>
-          <Col span="4" style="text-align: left;">
-            <span style="font-size: 16px;">
-              Reporte aquí posibles daños
-            </span>
-          </Col>
-          <Col :span="6">
+          <Col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
             <Row>
               <Col>
                 <span style="font-size: 16px; font-weight: bold;">
@@ -50,11 +66,11 @@
               </Col>
             </Row>
           </Col>
-          <Col :span="6">
+          <Col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
             <Row>
               <Col>
                 <span style="font-size: 16px; font-weight: bold;">
-                  Ingrese los datos de la Luminaria
+                  Información de la Luminaria
                 </span>
               </Col>
             </Row>
@@ -87,8 +103,21 @@
             </Row>
             <Row>
               <Col>
-                <FormItem label="Daño Que Presenta" prop="aaci_id">
-                  <Input :rows="4" v-model="reporte.repo_descripcion" />
+                <FormItem label="Daño Que Presenta" prop="acti_id">
+                  <Select
+                    v-model="reporte.acti_id"
+                    style="text-align: left; width: 100% !important;"
+                    filterable
+                    clearable
+                  >
+                    <Option
+                      v-for="a in actividades"
+                      :value="a.acti_id"
+                      :key="a.acti_id"
+                    >
+                      {{ a.acti_descripcion }}
+                    </Option>
+                  </Select>
                 </FormItem>
               </Col>
             </Row>
@@ -104,7 +133,7 @@
               </Col>
             </Row>
           </Col>
-          <Col :span="6">
+          <Col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
             <Row>
               <Col>
                 <span style="font-size: 16px; font-weight: bold;">
@@ -122,7 +151,8 @@
             <Row>
               <Col>
                 <span>
-                  Para registrar el reporte realice la operación solicitada
+                  Para registrar el reporte realice la operación arriba
+                  solicitada
                 </span>
               </Col>
             </Row>
@@ -143,7 +173,11 @@
   </Layout>
 </template>
 <script>
+import Consulta from "./Consulta.vue";
 export default {
+  components: {
+    Consulta
+  },
   data() {
     return {
       reporte: {
@@ -152,15 +186,12 @@ export default {
         repo_email: null,
         repo_direccion: null,
         barr_id: null,
+        acti_id: null,
         repo_descripcion: null,
         repo_captcha: null
       },
-      barrios: [
-        {
-          barr_id: 1,
-          barr_descripcion: "GIRON CENTRO"
-        }
-      ],
+      barrios: [],
+      actividades: [],
       ruleValidate: {
         repo_nombre: [
           {
@@ -199,6 +230,14 @@ export default {
             trigger: "change"
           }
         ],
+        acti_id: [
+          {
+            required: true,
+            type: "number",
+            message: "Debe seleccionar el daño que presenta la luminaria",
+            trigger: "change"
+          }
+        ],
         repo_descripcion: [
           {
             required: true,
@@ -222,7 +261,8 @@ export default {
     };
   },
   created() {
-    this.getData();
+    this.getDataBarrio();
+    this.getDataAccion();
   },
   mounted() {
     this.captcha.numeroa = Math.floor(Math.random() * 10 + 1);
@@ -249,7 +289,7 @@ export default {
         }
       });
     },
-    getData() {
+    getDataBarrio() {
       this.$http
         .get(
           "http://siap.iluminacionsanjuangiron.com/api/barr/gbi/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
@@ -257,6 +297,16 @@ export default {
         .then(response => {
           this.barrios = response.data;
           console.log("Barrios: " + JSON.stringify(this.barrios));
+        });
+    },
+    getDataAccion() {
+      this.$http
+        .get(
+          "http://siap.iluminacionsanjuangiron.com/api/acti/gbi/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+        )
+        .then(response => {
+          this.actividades = response.data;
+          console.log("Actividades: " + JSON.stringify(this.actividades));
         });
     }
   }
