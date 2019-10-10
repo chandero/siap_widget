@@ -11,13 +11,14 @@
           <Col :span="12">
             <FormItem prop="repo_consecutivo">
               <Input
-                v-model="consulta.repo_consecutivo"
+                v-model.number="consulta.repo_consecutivo"
                 placeholder="Número Radicado"
               />
             </FormItem>
           </Col>
           <Col :span="12">
             <Button
+              :disabled="!consulta.repo_consecutivo"
               style="font-size: 16px; font-weight: 400; background-color: #FFC400;"
               @click="validar('formValidate')"
             >
@@ -27,6 +28,77 @@
         </Row>
       </Form>
     </Content>
+    <Modal v-model="showModal" style="width: 600px;">
+      <p
+        slot="header"
+        style="font-size: 16px; font-weight: 400; background-color: #FFC400;"
+      >
+        <Icon type="ios-information-circle"></Icon>
+        <span>Consulta de Reporte</span>
+      </p>
+      <div style="font-size: 24px;">
+        <Layout>
+          <Content>
+            <Row>
+              <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+                <span>Número de Radicado</span>
+              </Col>
+              <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">{{
+                reporte.repo_consecutivo
+              }}</Col>
+            </Row>
+            <Row>
+              <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+                <span>Estado</span>
+              </Col>
+              <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">{{
+                estado(reporte.rees_id)
+              }}</Col>
+            </Row>
+            <Row>
+              <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+                <span>Dirección</span>
+              </Col>
+              <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">{{
+                reporte.repo_direccion
+              }}</Col>
+            </Row>
+            <Row>
+              <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+                <span>Barrio</span>
+              </Col>
+              <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">{{
+                barrio(reporte.barr_id)
+              }}</Col>
+            </Row>
+            <Row>
+              <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+                <span>Descripción del Problema</span>
+              </Col>
+              <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">{{
+                actividad(reporte.acti_id)
+              }}</Col>
+            </Row>
+            <Row>
+              <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+                <span>Evento</span>
+              </Col>
+              <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+                <span>MANTENIMIENTO</span>
+              </Col>
+            </Row>
+          </Content>
+        </Layout>
+      </div>
+      <div slot="footer">
+        <Button
+          @click="showModal = false"
+          style="font-size: 16px; font-weight: 400; background-color: #FFC400;"
+        >
+          Aceptar
+        </Button>
+      </div>
+    </Modal>
   </Layout>
 </template>
 <script>
@@ -38,21 +110,24 @@ export default {
         repo_consecutivo: null
       },
       reporte: {
-        repo_nombre: null,
-        repo_telefono: null,
-        repo_email: null,
+        repo_consecutivo: null,
         repo_direccion: null,
         barr_id: null,
         acti_id: null,
         repo_descripcion: null,
-        repo_captcha: null
+        repo_reportetecnico: null,
+        repo_fechasolucion: null,
+        repo_horainicio: null,
+        repo_horafin: null
       },
       barrios: [],
       actividades: [],
+      showModal: false,
       ruleValidate: {
         repo_consecutivo: [
           {
             required: true,
+            type: "number",
             message: "Debe diligenciar el Número de Rádicado",
             trigger: "blur"
           }
@@ -131,6 +206,8 @@ export default {
       this.$refs[name].validate(valid => {
         if (valid) {
           console.log("Enviar Datos");
+          this.reporte.repo_consecutivo = this.consulta.repo_consecutivo;
+          this.showModal = true;
         } else {
           this.$Message.error({
             content: "Por favor ingrese el número de radicado!",
@@ -138,6 +215,33 @@ export default {
           });
         }
       });
+    },
+    barrio(barr_id) {
+      if (barr_id === undefined || barr_id === null) {
+        return "";
+      } else {
+        return this.barrios.find(b => b.barr_id === barr_id, {
+          barr_descripcion: ""
+        }).barr_descripcion;
+      }
+    },
+    estado(rees_id) {
+      if (rees_id === undefined || rees_id === null) {
+        return "";
+      } else {
+        return this.estados.find(e => e.rees_id === rees_id, {
+          rees_descripcion: ""
+        }).rees_descripcion;
+      }
+    },
+    actividad(acti_id) {
+      if (acti_id === undefined || acti_id === null) {
+        return "";
+      } else {
+        return this.actividades.find(a => a.acti_id === acti_id, {
+          acti_descripcion: ""
+        }).acti_descripcion;
+      }
     },
     getDataBarrio() {
       this.$http
