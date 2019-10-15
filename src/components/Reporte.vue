@@ -144,7 +144,10 @@
             <Row>
               <Col>
                 <FormItem label="Digíte su respuesta" prop="repo_captcha">
-                  <Input v-model="reporte.repo_captcha" />
+                  <Input
+                    v-model="reporte.repo_captcha"
+                    @input="reporte.repo_captcha = parseInt($event)"
+                  />
                 </FormItem>
               </Col>
             </Row>
@@ -182,13 +185,16 @@ export default {
     return {
       reporte: {
         repo_nombre: null,
-        repo_telefono: null,
-        repo_email: null,
         repo_direccion: null,
+        repo_telefono: null,
         barr_id: null,
+        repo_email: null,
         acti_id: null,
         repo_descripcion: null,
-        repo_captcha: null
+        repo_captcha: null,
+        repo_fecharecepcion: null,
+        empr_id: 1,
+        token: "43f44388-5cd1-4657-9f7e-ea4e014e9333"
       },
       barrios: [],
       actividades: [],
@@ -248,6 +254,7 @@ export default {
         repo_captcha: [
           {
             required: true,
+            type: "number",
             message: "Debe digitar su respuesta",
             trigger: "blur"
           }
@@ -275,6 +282,16 @@ export default {
         if (valid) {
           if (this.reporte.repo_captcha === this.captcha.result) {
             console.log("Enviar Datos");
+            this.$http
+              .post(
+                "http://siap.iluminacionsanjuangiron.com/api/repo/grw",
+                this.reporte
+              )
+              .then(response => {
+                console.log(
+                  "Respuesta de Creación: " + JSON.stringify(response)
+                );
+              });
           } else {
             this.$Message.error({
               content: "La respuesta dada no es correcta!",
