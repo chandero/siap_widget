@@ -256,7 +256,7 @@ export default {
     getDataAccion() {
       this.$http
         .get(
-          "http://siap.iluminacionsanjuangiron.com/api/acti/gbi/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+          "http://siap.iluminacionsanjuangiron.com/api/acti/gai/43f44388-5cd1-4657-9f7e-ea4e014e9333"
         )
         .then(response => {
           this.actividades = response.data;

@@ -6,6 +6,13 @@ import "iview/dist/styles/iview.css";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import onlyInt from "vue-input-only-number";
+import moment from "moment";
+
+Vue.filter("formatDate", function(value) {
+  if (value) {
+    return moment(String(value)).format("YYYY/MM/DD HH:mm:ss");
+  }
+});
 
 Vue.config.productionTip = false;
 

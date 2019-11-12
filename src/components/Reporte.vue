@@ -173,10 +173,37 @@
         </Row>
       </Form>
     </Content>
+    <Modal v-model="showConfirmDialog" width="360">
+      <p slot="header" style="color:#FFC400;text-align:center">
+        <Icon type="ios-information-circle"></Icon>
+        <span>Reporte Creado</span>
+      </p>
+      <div
+        style="text-align:center; font-size: 26px; font-family: Arial, Helvetica, sans-serif;"
+      >
+        <p>
+          Se ha creado el Reporte Caso No.
+          <span style="font-weight: bold;">{{ consecutivo }}</span>
+          .
+        </p>
+        <p>Por favor guarde este número para consultas posteriores.</p>
+      </div>
+      <div slot="footer">
+        <Button
+          size="large"
+          long
+          @click="cerrarDialogo"
+          style="background-color:#FFC400;"
+        >
+          Cerrar
+        </Button>
+      </div>
+    </Modal>
   </Layout>
 </template>
 <script>
 import Consulta from "./Consulta.vue";
+import moment from "moment";
 export default {
   components: {
     Consulta
@@ -196,6 +223,7 @@ export default {
         empr_id: 1,
         token: "43f44388-5cd1-4657-9f7e-ea4e014e9333"
       },
+      consecutivo: null,
       barrios: [],
       actividades: [],
       ruleValidate: {
@@ -282,15 +310,18 @@ export default {
         if (valid) {
           if (this.reporte.repo_captcha === this.captcha.result) {
             console.log("Enviar Datos");
+            this.reporte.repo_fecharecepcion = moment(
+              String(new Date())
+            ).format("YYYY-MM-DD HH:mm:ss");
             this.$http
               .post(
                 "http://siap.iluminacionsanjuangiron.com/api/repo/grw",
                 this.reporte
               )
               .then(response => {
-                console.log(
-                  "Respuesta de Creación: " + JSON.stringify(response)
-                );
+                this.limpiar();
+                this.consecutivo = response.data.consec;
+                this.showConfirmDialog = true;
               });
           } else {
             this.$Message.error({
@@ -319,12 +350,30 @@ export default {
     getDataAccion() {
       this.$http
         .get(
-          "http://siap.iluminacionsanjuangiron.com/api/acti/gbi/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+          "http://siap.iluminacionsanjuangiron.com/api/acti/gai/43f44388-5cd1-4657-9f7e-ea4e014e9333"
         )
         .then(response => {
           this.actividades = response.data;
           console.log("Actividades: " + JSON.stringify(this.actividades));
         });
+    },
+    limpiar() {
+      this.reporte = {
+        repo_nombre: null,
+        repo_direccion: null,
+        repo_telefono: null,
+        barr_id: null,
+        repo_email: null,
+        acti_id: null,
+        repo_descripcion: null,
+        repo_captcha: null,
+        repo_fecharecepcion: null,
+        empr_id: 1,
+        token: "43f44388-5cd1-4657-9f7e-ea4e014e9333"
+      };
+    },
+    cerrarDialogo() {
+      this.showConfirmDialog = false;
     }
   }
 };
