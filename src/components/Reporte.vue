@@ -174,7 +174,7 @@
       </Form>
     </Content>
     <Modal v-model="showConfirmDialog" width="360">
-      <p slot="header" style="color:#FFC400;text-align:center">
+      <p slot="header" style="font-size: 18px;color:#FFC400;text-align:center">
         <Icon type="ios-information-circle"></Icon>
         <span>Reporte Creado</span>
       </p>
@@ -192,7 +192,7 @@
         <Button
           size="large"
           long
-          @click="cerrarDialogo"
+          @click="showConfirmDialog = false"
           style="background-color:#FFC400;"
         >
           Cerrar
@@ -223,6 +223,7 @@ export default {
         empr_id: 1,
         token: "43f44388-5cd1-4657-9f7e-ea4e014e9333"
       },
+      showConfirmDialog: false,
       consecutivo: null,
       barrios: [],
       actividades: [],
@@ -319,9 +320,9 @@ export default {
                 this.reporte
               )
               .then(response => {
-                this.limpiar();
                 this.consecutivo = response.data.consec;
                 this.showConfirmDialog = true;
+                this.limpiar();
               });
           } else {
             this.$Message.error({
@@ -371,9 +372,9 @@ export default {
         empr_id: 1,
         token: "43f44388-5cd1-4657-9f7e-ea4e014e9333"
       };
-    },
-    cerrarDialogo() {
-      this.showConfirmDialog = false;
+      this.$refs["formValidate"].reset();
+      this.reporte.empr_id = 1;
+      this.reporte.token = "43f44388-5cd1-4657-9f7e-ea4e014e9333";
     }
   }
 };

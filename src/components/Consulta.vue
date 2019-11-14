@@ -29,10 +29,7 @@
       </Form>
     </Content>
     <Modal v-model="showModal" style="width: 600px;">
-      <p
-        slot="header"
-        style="font-size: 16px; font-weight: 400; background-color: #FFC400;"
-      >
+      <p slot="header" style="font-size: 18px; color:#FFC400;text-align:center">
         <Icon type="ios-information-circle"></Icon>
         <span>Consulta de Reporte</span>
       </p>
@@ -43,17 +40,31 @@
               <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
                 <span>Número de Radicado</span>
               </Col>
-              <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">{{
-                reporte.repo_consecutivo
-              }}</Col>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="12"
+                :lg="12"
+                :xl="12"
+                style="font-weight: bold; font-size: 24px;"
+              >
+                {{ reporte.repo_consecutivo }}
+              </Col>
             </Row>
             <Row>
               <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
                 <span>Estado</span>
               </Col>
-              <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">{{
-                estado(reporte.rees_id)
-              }}</Col>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="12"
+                :lg="12"
+                :xl="12"
+                style="font-weight: bold; font-size: 26px;"
+              >
+                {{ reporte.rees_descripcion }}
+              </Col>
             </Row>
             <Row>
               <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
@@ -76,7 +87,7 @@
                 <span>Descripción del Problema</span>
               </Col>
               <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">{{
-                actividad(reporte.acti_id)
+                reporte.repo_descripcion
               }}</Col>
             </Row>
             <Row>
@@ -93,9 +104,11 @@
       <div slot="footer">
         <Button
           @click="showModal = false"
+          size="large"
+          long
           style="font-size: 16px; font-weight: 400; background-color: #FFC400;"
         >
-          Aceptar
+          Cerrar
         </Button>
       </div>
     </Modal>
@@ -205,9 +218,24 @@ export default {
     validar(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
-          console.log("Enviar Datos");
-          this.reporte.repo_consecutivo = this.consulta.repo_consecutivo;
-          this.showModal = true;
+          this.$http
+            .get(
+              "http://siap.iluminacionsanjuangiron.com/api/repo/gbtc/" +
+                this.consulta.repo_consecutivo +
+                "/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+            )
+            .then(response => {
+              this.consulta.repo_consecutivo = null;
+              this.reporte = response.data;
+              this.showModal = true;
+            })
+            .catch(error => {
+              this.consulta.repo_consecutivo = null;
+              this.$Message.error({
+                content: error,
+                duration: 10
+              });
+            });
         } else {
           this.$Message.error({
             content: "Por favor ingrese el número de radicado!",
