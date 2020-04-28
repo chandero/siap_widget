@@ -310,7 +310,6 @@ export default {
       this.$refs[name].validate(valid => {
         if (valid) {
           if (this.reporte.repo_captcha === this.captcha.result) {
-            console.log("Enviar Datos");
             this.reporte.repo_fecharecepcion = moment(
               String(new Date())
             ).format("YYYY-MM-DD HH:mm:ss");
@@ -345,7 +344,6 @@ export default {
         )
         .then(response => {
           this.barrios = response.data;
-          console.log("Barrios: " + JSON.stringify(this.barrios));
         });
     },
     getDataAccion() {
@@ -355,7 +353,6 @@ export default {
         )
         .then(response => {
           this.actividades = response.data;
-          console.log("Actividades: " + JSON.stringify(this.actividades));
         });
     },
     limpiar() {
