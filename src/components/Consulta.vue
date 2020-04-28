@@ -79,7 +79,7 @@
                 <span>Barrio</span>
               </Col>
               <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">{{
-                barrio(reporte.barr_id)
+                reporte.barr_descripcion
               }}</Col>
             </Row>
             <Row>
@@ -220,7 +220,7 @@ export default {
         if (valid) {
           this.$http
             .get(
-              "http://siap.iluminacionsanjuangiron.com/api/repo/gbtc/" +
+              "https://siap.iluminacionsanjuangiron.com/api/repo/gbtc/" +
                 this.consulta.repo_consecutivo +
                 "/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
             )
@@ -229,10 +229,10 @@ export default {
               this.reporte = response.data;
               this.showModal = true;
             })
-            .catch(error => {
+            .catch(() => {
               this.consulta.repo_consecutivo = null;
               this.$Message.error({
-                content: error,
+                content: "No se encontró ese número de radicado",
                 duration: 10
               });
             });
@@ -245,6 +245,7 @@ export default {
       });
     },
     barrio(barr_id) {
+      console.log("Barrio id: " + barr_id);
       if (barr_id === undefined || barr_id === null) {
         return "";
       } else {

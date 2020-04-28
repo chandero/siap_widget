@@ -315,7 +315,7 @@ export default {
             ).format("YYYY-MM-DD HH:mm:ss");
             this.$http
               .post(
-                "http://siap.iluminacionsanjuangiron.com/api/repo/grw",
+                "https://siap.iluminacionsanjuangiron.com/api/repo/grw",
                 this.reporte
               )
               .then(response => {
@@ -340,7 +340,7 @@ export default {
     getDataBarrio() {
       this.$http
         .get(
-          "http://siap.iluminacionsanjuangiron.com/api/barr/gbi/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+          "https://siap.iluminacionsanjuangiron.com/api/barr/gbi/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
         )
         .then(response => {
           this.barrios = response.data;
@@ -349,7 +349,7 @@ export default {
     getDataAccion() {
       this.$http
         .get(
-          "http://siap.iluminacionsanjuangiron.com/api/acti/gai/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+          "https://siap.iluminacionsanjuangiron.com/api/acti/gai/43f44388-5cd1-4657-9f7e-ea4e014e9333"
         )
         .then(response => {
           this.actividades = response.data;
