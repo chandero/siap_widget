@@ -29,11 +29,11 @@
       </Form>
     </Content>
     <Modal v-model="showModal" style="width: 600px;">
-      <p slot="header" style="font-size: 18px; color:#FFC400;text-align:center">
+      <p slot="header" style="font-size: 20px; color:#FFC400;text-align:center">
         <Icon type="ios-information-circle"></Icon>
         <span>Consulta de Reporte</span>
       </p>
-      <div style="font-size: 24px;">
+      <div style="font-size: 18px;">
         <Layout>
           <Content>
             <Row>
@@ -220,7 +220,7 @@ export default {
         if (valid) {
           this.$http
             .get(
-              "https://siap.iluminacionsanjuangiron.com/api/repo/gbtc/" +
+              "https://siap.iluminacionsanjuangiron.com/api/repo/gbtcw/" +
                 this.consulta.repo_consecutivo +
                 "/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
             )
@@ -245,7 +245,6 @@ export default {
       });
     },
     barrio(barr_id) {
-      console.log("Barrio id: " + barr_id);
       if (barr_id === undefined || barr_id === null) {
         return "";
       } else {
@@ -279,7 +278,6 @@ export default {
         )
         .then(response => {
           this.barrios = response.data;
-          console.log("Barrios: " + JSON.stringify(this.barrios));
         });
     },
     getDataAccion() {
@@ -289,7 +287,6 @@ export default {
         )
         .then(response => {
           this.actividades = response.data;
-          console.log("Actividades: " + JSON.stringify(this.actividades));
         });
     }
   }
