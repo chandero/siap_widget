@@ -7,6 +7,9 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 import onlyInt from "vue-input-only-number";
 import moment from "moment";
+import VueRouter from "vue-router";
+
+Vue.use(VueRouter);
 
 Vue.filter("formatDate", function(value) {
   if (value) {

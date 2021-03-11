@@ -11,6 +11,15 @@ export default {
   name: "app",
   components: {
     Reporte
+  },
+  data() {
+    return {
+      repo_consecutivo: null
+    };
+  },
+  mounted() {
+    let urlParams = new URLSearchParams(window.location.search);
+    console.log("consec: " + urlParams.get("id"));
   }
 };
 </script>
