@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Reporte></Reporte>
+    <Reporte :codigo="codigo"></Reporte>
   </div>
 </template>
 
@@ -14,12 +14,13 @@ export default {
   },
   data() {
     return {
-      repo_consecutivo: null
+      codigo: null
     };
   },
   mounted() {
     let urlParams = new URLSearchParams(window.location.search);
-    console.log("consec: " + urlParams.get("id"));
+    this.codigo = urlParams.get("codigo");
+    console.log("consec: " + this.codigo);
   }
 };
 </script>

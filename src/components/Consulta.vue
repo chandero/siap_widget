@@ -115,8 +115,12 @@
   </Layout>
 </template>
 <script>
+import { mapGetters } from "vuex";
 export default {
   el: "Consulta",
+  computed: {
+    ...mapGetters(["url"])
+  },
   data() {
     return {
       consulta: {
@@ -205,9 +209,8 @@ export default {
       }
     };
   },
-  created() {
+  beforeMount() {
     this.getDataBarrio();
-    this.getDataAccion();
   },
   mounted() {
     this.captcha.numeroa = Math.floor(Math.random() * 10 + 1);
@@ -220,7 +223,9 @@ export default {
         if (valid) {
           this.$http
             .get(
-              "https://siap.iluminacionsanjuangiron.com/api/repo/gbtcw/" +
+              this.url +
+                "/api/repo/gbtcw/" +
+                //"https://siap.iluminacionsanjuangiron.com/api/repo/gbtcw/" +
                 this.consulta.repo_consecutivo +
                 "/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
             )
@@ -274,16 +279,19 @@ export default {
     getDataBarrio() {
       this.$http
         .get(
-          "http://siap.iluminacionsanjuangiron.com/api/barr/gbi/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+          this.url + "/api/barr/gbi/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+          //"http://siap.iluminacionsanjuangiron.com/api/barr/gbi/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
         )
         .then(response => {
           this.barrios = response.data;
+          this.getDataAccion();
         });
     },
     getDataAccion() {
       this.$http
         .get(
-          "http://siap.iluminacionsanjuangiron.com/api/acti/gai/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+          this.url + "/api/acti/gai/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+          //"http://siap.iluminacionsanjuangiron.com/api/acti/gai/43f44388-5cd1-4657-9f7e-ea4e014e9333"
         )
         .then(response => {
           this.actividades = response.data;

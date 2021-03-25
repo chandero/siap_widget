@@ -6,7 +6,7 @@
           <Col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
             <Row>
               <Col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                <img src="../assets/icono_correo.png" style="width: 64px;" />
+                <img src="../assets/icono_correo.png" style="width: 64px" />
               </Col>
               <Col
                 :xs="24"
@@ -14,9 +14,9 @@
                 :md="12"
                 :lg="12"
                 :xl="12"
-                style="text-align: center;"
+                style="text-align: center"
               >
-                <span style="font-size: 16px;">
+                <span style="font-size: 16px">
                   Reporte aquí posibles daños
                 </span>
               </Col>
@@ -30,7 +30,7 @@
           <Col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
             <Row>
               <Col>
-                <span style="font-size: 16px; font-weight: bold;">
+                <span style="font-size: 16px; font-weight: bold">
                   Ingrese sus datos
                 </span>
               </Col>
@@ -40,6 +40,7 @@
                 <FormItem label="Nombre Completo" prop="repo_nombre">
                   <Input
                     v-model="reporte.repo_nombre"
+                    autofocus
                     placeholder="Nombres y Apellidos"
                   />
                 </FormItem>
@@ -69,9 +70,16 @@
           <Col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
             <Row>
               <Col>
-                <span style="font-size: 16px; font-weight: bold;">
+                <span style="font-size: 16px; font-weight: bold">
                   Información de la Luminaria
                 </span>
+              </Col>
+            </Row>
+            <Row>
+              <Col :span="24">
+                <FormItem label="Código Luminaria" prop="aap_id">
+                  <Input readonly v-model="reporte.aap_id" />
+                </FormItem>
               </Col>
             </Row>
             <Row :gutter="4">
@@ -86,7 +94,7 @@
                 <FormItem label="Barrio Luminaria" prop="barr_id">
                   <Select
                     v-model="reporte.barr_id"
-                    style="text-align: left; width: 100% !important;"
+                    style="text-align: left; width: 100% !important"
                     filterable
                     clearable
                   >
@@ -106,7 +114,7 @@
                 <FormItem label="Daño Que Presenta" prop="acti_id">
                   <Select
                     v-model="reporte.acti_id"
-                    style="text-align: left; width: 100% !important;"
+                    style="text-align: left; width: 100% !important"
                     filterable
                     clearable
                   >
@@ -136,8 +144,8 @@
           <Col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
             <Row>
               <Col>
-                <span style="font-size: 16px; font-weight: bold;">
-                  Resolver la Suma {{ captcha.numeroa }} + {{ captcha.numerob }}
+                <span style="font-size: 16px; font-weight: bold">
+                  Resuelva la Suma {{ captcha.numeroa }} + {{ captcha.numerob }}
                 </span>
               </Col>
             </Row>
@@ -162,7 +170,11 @@
             <Row>
               <Col>
                 <Button
-                  style="font-size: 16px; font-weight: 400; background-color: #FFC400;"
+                  style="
+                    font-size: 16px;
+                    font-weight: 400;
+                    background-color: #ffc400;
+                  "
                   @click="validar('formValidate')"
                 >
                   Enviar Reporte
@@ -174,16 +186,23 @@
       </Form>
     </Content>
     <Modal v-model="showConfirmDialog" width="360">
-      <p slot="header" style="font-size: 18px;color:#FFC400;text-align:center">
+      <p
+        slot="header"
+        style="font-size: 18px; color: #ffc400; text-align: center"
+      >
         <Icon type="ios-information-circle"></Icon>
         <span>Reporte Creado</span>
       </p>
       <div
-        style="text-align:center; font-size: 26px; font-family: Arial, Helvetica, sans-serif;"
+        style="
+          text-align: center;
+          font-size: 26px;
+          font-family: Arial, Helvetica, sans-serif;
+        "
       >
         <p>
           Se ha creado el Reporte Caso No.
-          <span style="font-weight: bold;">{{ consecutivo }}</span>
+          <span style="font-weight: bold">{{ consecutivo }}</span>
           .
         </p>
         <p>Por favor guarde este número para consultas posteriores.</p>
@@ -193,7 +212,7 @@
           size="large"
           long
           @click="showConfirmDialog = false"
-          style="background-color:#FFC400;"
+          style="background-color: #ffc400"
         >
           Cerrar
         </Button>
@@ -204,13 +223,25 @@
 <script>
 import Consulta from "./Consulta.vue";
 import moment from "moment";
+import { mapGetters } from "vuex";
 export default {
   components: {
     Consulta
   },
+  props: {
+    codigo: {
+      type: String,
+      required: false,
+      default: null
+    }
+  },
+  computed: {
+    ...mapGetters(["url"])
+  },
   data() {
     return {
       reporte: {
+        aap_id: null,
         repo_nombre: null,
         repo_direccion: null,
         repo_telefono: null,
@@ -293,12 +324,12 @@ export default {
         numeroa: null,
         numerob: null,
         result: null
-      }
+      },
+      aap: null
     };
   },
-  created() {
+  beforeMount() {
     this.getDataBarrio();
-    this.getDataAccion();
   },
   mounted() {
     this.captcha.numeroa = Math.floor(Math.random() * 10 + 1);
@@ -315,7 +346,8 @@ export default {
             ).format("YYYY-MM-DD HH:mm:ss");
             this.$http
               .post(
-                "https://siap.iluminacionsanjuangiron.com/api/repo/grw",
+                this.url + "/api/repo/grw",
+                //"https://siap.iluminacionsanjuangiron.com/api/repo/grw",
                 this.reporte
               )
               .then(response => {
@@ -337,22 +369,44 @@ export default {
         }
       });
     },
+    getLuminaria() {
+      if (this.codigo) {
+        this.$http
+          .get(
+            this.url +
+              "/api/aap/gbc/" +
+              //"https://siap.iluminacionsanjuangiron.com/api/aap/gbc/" +
+              this.codigo +
+              "/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+          )
+          .then(response => {
+            this.aap = response.data;
+            this.reporte.aap_id = this.aap.aap_id;
+            this.reporte.repo_direccion = this.aap.aap_direccion;
+            this.reporte.barr_id = this.aap.barr_id;
+          });
+      }
+    },
     getDataBarrio() {
       this.$http
         .get(
-          "https://siap.iluminacionsanjuangiron.com/api/barr/gbi/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+          this.url + "/api/barr/gbi/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+          //"https://siap.iluminacionsanjuangiron.com/api/barr/gbi/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
         )
         .then(response => {
           this.barrios = response.data;
+          this.getDataAccion();
         });
     },
     getDataAccion() {
       this.$http
         .get(
-          "https://siap.iluminacionsanjuangiron.com/api/acti/gai/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+          this.url + "/api/acti/gai/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+          //"https://siap.iluminacionsanjuangiron.com/api/acti/gai/43f44388-5cd1-4657-9f7e-ea4e014e9333"
         )
         .then(response => {
           this.actividades = response.data;
+          this.getLuminaria();
         });
     },
     limpiar() {
