@@ -34,7 +34,7 @@ Vue.use(onlyInt);
 const store = new Vuex.Store({
   state: {
     // url: "http://localhost:9091"
-    url: 'http://siap.iluminacionsanjuangiron.com',
+    url: 'https://siap.iluminacionsanjuangiron.com',
   },
   getters: {
     url: (state) => {

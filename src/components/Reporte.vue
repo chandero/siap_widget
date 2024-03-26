@@ -372,6 +372,7 @@ export default {
     },
     getLuminaria() {
       if (this.codigo) {
+        console.log('si existe codigo')
         this.$http
           .get(
             this.url +
@@ -386,6 +387,8 @@ export default {
             this.reporte.repo_direccion = this.aap.aap_direccion;
             this.reporte.barr_id = this.aap.barr_id;
           });
+      }else{
+        console.log('no existe codigo')
       }
     },
     getDataBarrio() {

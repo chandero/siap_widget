@@ -3,12 +3,12 @@ import axios from 'axios';
 
 // create an axios
 const service = axios.create({
-  /* baseURL:
+  baseURL:
     window.location.protocol +
-    "//" +
-    window.location.host.split("/")[0].split(":")[0] +
-    ":9091/api", // api的base_url */
-  baseURL: 'http://192.168.1.6:9091/api',
+    '//' +
+    window.location.host.split('/')[0].split(':')[0] +
+    '/api', // api的base_url
+  /* baseURL: 'http://192.168.1.6:9091/api', */
   timeout: 30000, // request timeout
   headers: {
     'Content-Type': 'application/json',

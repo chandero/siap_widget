@@ -115,11 +115,11 @@
   </Layout>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 export default {
-  el: "Consulta",
+  name: 'Consulta',
   computed: {
-    ...mapGetters(["url"])
+    ...mapGetters(['url'])
   },
   data() {
     return {
@@ -144,61 +144,61 @@ export default {
         repo_consecutivo: [
           {
             required: true,
-            type: "number",
-            message: "Debe diligenciar el Número de Rádicado",
-            trigger: "blur"
+            type: 'number',
+            message: 'Debe diligenciar el Número de Rádicado',
+            trigger: 'blur'
           }
         ],
         repo_telefono: [
           {
             required: true,
-            message: "Debe diligenciar el teléfono",
-            trigger: "blur"
+            message: 'Debe diligenciar el teléfono',
+            trigger: 'blur'
           }
         ],
         repo_email: [
           {
             required: true,
-            message: "Debe diligenciar el correo electrónico",
-            trigger: "blur"
+            message: 'Debe diligenciar el correo electrónico',
+            trigger: 'blur'
           }
         ],
         repo_direccion: [
           {
             required: true,
-            message: "Debe diligenciar la dirección de la Luminaria",
-            trigger: "blur"
+            message: 'Debe diligenciar la dirección de la Luminaria',
+            trigger: 'blur'
           }
         ],
         barr_id: [
           {
             required: true,
-            type: "number",
+            type: 'number',
             message:
-              "Debe seleccionar el barrio donde se encuentra la Luminaria",
-            trigger: "change"
+              'Debe seleccionar el barrio donde se encuentra la Luminaria',
+            trigger: 'change'
           }
         ],
         acti_id: [
           {
             required: true,
-            type: "number",
-            message: "Debe seleccionar el daño que presenta la luminaria",
-            trigger: "change"
+            type: 'number',
+            message: 'Debe seleccionar el daño que presenta la luminaria',
+            trigger: 'change'
           }
         ],
         repo_descripcion: [
           {
             required: true,
-            message: "Debe describir el daño que presenta a luminaria",
-            trigger: "blur"
+            message: 'Debe describir el daño que presenta a luminaria',
+            trigger: 'blur'
           }
         ],
         repo_captcha: [
           {
             required: true,
-            message: "Debe digitar su respuesta",
-            trigger: "blur"
+            message: 'Debe digitar su respuesta',
+            trigger: 'blur'
           }
         ]
       },
@@ -224,10 +224,10 @@ export default {
           this.$http
             .get(
               this.url +
-                "/api/repo/gbtcw/" +
+                '/api/repo/gbtcw/' +
                 //"https://siap.iluminacionsanjuangiron.com/api/repo/gbtcw/" +
                 this.consulta.repo_consecutivo +
-                "/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+                '/1/43f44388-5cd1-4657-9f7e-ea4e014e9333'
             )
             .then(response => {
               this.consulta.repo_consecutivo = null;
@@ -237,13 +237,13 @@ export default {
             .catch(() => {
               this.consulta.repo_consecutivo = null;
               this.$Message.error({
-                content: "No se encontró ese número de radicado",
+                content: 'No se encontró ese número de radicado',
                 duration: 10
               });
             });
         } else {
           this.$Message.error({
-            content: "Por favor ingrese el número de radicado!",
+            content: 'Por favor ingrese el número de radicado!',
             duration: 5
           });
         }
@@ -251,35 +251,35 @@ export default {
     },
     barrio(barr_id) {
       if (barr_id === undefined || barr_id === null) {
-        return "";
+        return '';
       } else {
         return this.barrios.find(b => b.barr_id === barr_id, {
-          barr_descripcion: ""
+          barr_descripcion: ''
         }).barr_descripcion;
       }
     },
     estado(rees_id) {
       if (rees_id === undefined || rees_id === null) {
-        return "";
+        return '';
       } else {
         return this.estados.find(e => e.rees_id === rees_id, {
-          rees_descripcion: ""
+          rees_descripcion: ''
         }).rees_descripcion;
       }
     },
     actividad(acti_id) {
       if (acti_id === undefined || acti_id === null) {
-        return "";
+        return '';
       } else {
         return this.actividades.find(a => a.acti_id === acti_id, {
-          acti_descripcion: ""
+          acti_descripcion: ''
         }).acti_descripcion;
       }
     },
     getDataBarrio() {
       this.$http
         .get(
-          this.url + "/api/barr/gbi/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+          this.url + '/api/barr/gbi/1/43f44388-5cd1-4657-9f7e-ea4e014e9333'
           //"http://siap.iluminacionsanjuangiron.com/api/barr/gbi/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
         )
         .then(response => {
@@ -290,7 +290,7 @@ export default {
     getDataAccion() {
       this.$http
         .get(
-          this.url + "/api/acti/gai/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+          this.url + '/api/acti/gai/43f44388-5cd1-4657-9f7e-ea4e014e9333'
           //"http://siap.iluminacionsanjuangiron.com/api/acti/gai/43f44388-5cd1-4657-9f7e-ea4e014e9333"
         )
         .then(response => {

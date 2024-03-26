@@ -46,7 +46,7 @@ export default {
     return {
       codigo: null,
       isOption1: false,
-      isOption2: false,
+      isOption2: true,
     };
   },
   methods: {
@@ -62,6 +62,9 @@ export default {
 <style scoped>
 .container {
   padding: 20px;
+  overflow: scroll;
+  height: 1024px !important;
+  
 }
 
 .title {

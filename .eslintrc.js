@@ -5,7 +5,7 @@ module.exports = {
   },
   extends: ["plugin:vue/essential", "eslint:recommended"],
   rules: {
-    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-console": process.env.NODE_ENV === "production" ? "off" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
     "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }],
     "quotes": [2, "single", { avoidEscape: true }],
