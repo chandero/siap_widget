@@ -1,27 +1,30 @@
 <template>
   <div id="app">
-    <Reporte :codigo="codigo"></Reporte>
+    <!-- <Reporte :codigo="codigo"></Reporte> -->
+    <ReporteUnificado></ReporteUnificado>
   </div>
 </template>
 
 <script>
-import Reporte from "./components/Reporte.vue";
+/* import Reporte from "./components/Reporte.vue"; */
+import ReporteUnificado from './components/ReporteUnificado.vue';
 
 export default {
-  name: "app",
+  name: 'app',
   components: {
-    Reporte
+    /* Reporte, */
+    ReporteUnificado,
   },
   data() {
     return {
-      codigo: null
+      codigo: null,
     };
   },
-  mounted() {
+  /* mounted() {
     let urlParams = new URLSearchParams(window.location.search);
-    this.codigo = urlParams.get("codigo");
-    console.log("consec: " + this.codigo);
-  }
+    this.codigo = urlParams.get('codigo');
+    console.log('consec: ' + this.codigo);
+  }, */
 };
 </script>
 

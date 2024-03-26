@@ -221,9 +221,9 @@
   </Layout>
 </template>
 <script>
-import Consulta from "./Consulta.vue";
-import moment from "moment";
-import { mapGetters } from "vuex";
+import Consulta from './Consulta.vue';
+import moment from 'moment';
+import { mapGetters } from 'vuex';
 export default {
   components: {
     Consulta
@@ -236,7 +236,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["url"])
+    ...mapGetters(['url'])
   },
   data() {
     return {
@@ -252,7 +252,7 @@ export default {
         repo_captcha: null,
         repo_fecharecepcion: null,
         empr_id: 1,
-        token: "43f44388-5cd1-4657-9f7e-ea4e014e9333"
+        token: '43f44388-5cd1-4657-9f7e-ea4e014e9333'
       },
       showConfirmDialog: false,
       consecutivo: null,
@@ -262,61 +262,61 @@ export default {
         repo_nombre: [
           {
             required: true,
-            message: "Debe diligenciar el nombre completo",
-            trigger: "blur"
+            message: 'Debe diligenciar el nombre completo',
+            trigger: 'blur'
           }
         ],
         repo_telefono: [
           {
             required: true,
-            message: "Debe diligenciar el teléfono",
-            trigger: "blur"
+            message: 'Debe diligenciar el teléfono',
+            trigger: 'blur'
           }
         ],
         repo_email: [
           {
             required: true,
-            message: "Debe diligenciar el correo electrónico",
-            trigger: "blur"
+            message: 'Debe diligenciar el correo electrónico',
+            trigger: 'blur'
           }
         ],
         repo_direccion: [
           {
             required: true,
-            message: "Debe diligenciar la dirección de la Luminaria",
-            trigger: "blur"
+            message: 'Debe diligenciar la dirección de la Luminaria',
+            trigger: 'blur'
           }
         ],
         barr_id: [
           {
             required: true,
-            type: "number",
+            type: 'number',
             message:
-              "Debe seleccionar el barrio donde se encuentra la Luminaria",
-            trigger: "change"
+              'Debe seleccionar el barrio donde se encuentra la Luminaria',
+            trigger: 'change'
           }
         ],
         acti_id: [
           {
             required: true,
-            type: "number",
-            message: "Debe seleccionar el daño que presenta la luminaria",
-            trigger: "change"
+            type: 'number',
+            message: 'Debe seleccionar el daño que presenta la luminaria',
+            trigger: 'change'
           }
         ],
         repo_descripcion: [
           {
             required: true,
-            message: "Debe describir el daño que presenta a luminaria",
-            trigger: "blur"
+            message: 'Debe describir el daño que presenta a luminaria',
+            trigger: 'blur'
           }
         ],
         repo_captcha: [
           {
             required: true,
-            type: "number",
-            message: "Debe digitar su respuesta",
-            trigger: "blur"
+            type: 'number',
+            message: 'Debe digitar su respuesta',
+            trigger: 'blur'
           }
         ]
       },
@@ -335,6 +335,7 @@ export default {
     this.captcha.numeroa = Math.floor(Math.random() * 10 + 1);
     this.captcha.numerob = Math.floor(Math.random() * 10 + 1);
     this.captcha.result = this.captcha.numeroa + this.captcha.numerob;
+    console.log('codigo:', this.codigo);
   },
   methods: {
     validar(name) {
@@ -343,10 +344,10 @@ export default {
           if (this.reporte.repo_captcha === this.captcha.result) {
             this.reporte.repo_fecharecepcion = moment(
               String(new Date())
-            ).format("YYYY-MM-DD HH:mm:ss");
+            ).format('YYYY-MM-DD HH:mm:ss');
             this.$http
               .post(
-                this.url + "/api/repo/grw",
+                this.url + '/api/repo/grw',
                 //"https://siap.iluminacionsanjuangiron.com/api/repo/grw",
                 this.reporte
               )
@@ -357,13 +358,13 @@ export default {
               });
           } else {
             this.$Message.error({
-              content: "La respuesta dada no es correcta!",
+              content: 'La respuesta dada no es correcta!',
               duration: 5
             });
           }
         } else {
           this.$Message.error({
-            content: "Faltan datos por diligenciar en el formulario!",
+            content: 'Faltan datos por diligenciar en el formulario!',
             duration: 5
           });
         }
@@ -374,10 +375,10 @@ export default {
         this.$http
           .get(
             this.url +
-              "/api/aap/gbc/" +
+              '/api/aap/gbc/' +
               //"https://siap.iluminacionsanjuangiron.com/api/aap/gbc/" +
               this.codigo +
-              "/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+              '/1/43f44388-5cd1-4657-9f7e-ea4e014e9333'
           )
           .then(response => {
             this.aap = response.data;
@@ -390,7 +391,7 @@ export default {
     getDataBarrio() {
       this.$http
         .get(
-          this.url + "/api/barr/gbi/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+          this.url + '/api/barr/gbi/1/43f44388-5cd1-4657-9f7e-ea4e014e9333'
           //"https://siap.iluminacionsanjuangiron.com/api/barr/gbi/1/43f44388-5cd1-4657-9f7e-ea4e014e9333"
         )
         .then(response => {
@@ -401,7 +402,7 @@ export default {
     getDataAccion() {
       this.$http
         .get(
-          this.url + "/api/acti/gai/43f44388-5cd1-4657-9f7e-ea4e014e9333"
+          this.url + '/api/acti/gai/43f44388-5cd1-4657-9f7e-ea4e014e9333'
           //"https://siap.iluminacionsanjuangiron.com/api/acti/gai/43f44388-5cd1-4657-9f7e-ea4e014e9333"
         )
         .then(response => {
@@ -421,11 +422,11 @@ export default {
         repo_captcha: null,
         repo_fecharecepcion: null,
         empr_id: 1,
-        token: "43f44388-5cd1-4657-9f7e-ea4e014e9333"
+        token: '43f44388-5cd1-4657-9f7e-ea4e014e9333'
       };
-      this.$refs["formValidate"].reset();
+      this.$refs['formValidate'].reset();
       this.reporte.empr_id = 1;
-      this.reporte.token = "43f44388-5cd1-4657-9f7e-ea4e014e9333";
+      this.reporte.token = '43f44388-5cd1-4657-9f7e-ea4e014e9333';
     }
   }
 };

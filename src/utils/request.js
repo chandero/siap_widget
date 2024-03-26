@@ -1,38 +1,50 @@
-import axios from 'axios'
+import axios from 'axios';
 // import { Message } from 'element-ui'
 
 // create an axios
 const service = axios.create({
-  baseURL: window.location.protocol + '//' + window.location.host.split('/')[0].split(':')[0] + ':9091/api', // api的base_url
+  /* baseURL:
+    window.location.protocol +
+    "//" +
+    window.location.host.split("/")[0].split(":")[0] +
+    ":9091/api", // api的base_url */
+  baseURL: 'http://192.168.1.6:9091/api',
   timeout: 30000, // request timeout
   headers: {
-    'Content-Type': 'application/json'
-  }
-})
+    'Content-Type': 'application/json',
+  },
+});
 
 // request interceptor
-service.interceptors.request.use(config => {
-  // Do something before request is sent
+service.interceptors.request.use(
+  (config) => {
+    // Do something before request is sent
 
-  if (localStorage.token) {
-    config.headers['Authorization'] = localStorage.token
+    if (localStorage.token) {
+      console.log('Token found');
+      config.headers['Authorization'] = localStorage.token;
+    } else {
+      console.log('No token found');
+      config.headers['Authorization'] = '43f44388-5cd1-4657-9f7e-ea4e014e9333';
+    }
+    config.headers['Access-Control-Allow-Origin'] = '*';
+    config.headers['Access-Control-Allow-Credentials'] = 'true';
+    return config;
+  },
+  (error) => {
+    // Do something with request error
+    console.log(error); // for debug
+    Promise.reject(error);
   }
-  config.headers['Access-Control-Allow-Origin'] = '*'
-  config.headers['Access-Control-Allow-Credentials'] = 'true'
-  return config
-}, error => {
-  // Do something with request error
-  console.log(error) // for debug
-  Promise.reject(error)
-})
+);
 
 // respone interceptor
 service.interceptors.response.use(
-  response => response,
+  (response) => response,
   /**
-  * 下面的注释为通过response自定义code来标示请求状态，当code返回如下情况为权限有问题，登出并返回到登录页
-  * 如通过xmlhttprequest 状态码标识 逻辑可写在下面error中
-  */
+   * 下面的注释为通过response自定义code来标示请求状态，当code返回如下情况为权限有问题，登出并返回到登录页
+   * 如通过xmlhttprequest 状态码标识 逻辑可写在下面error中
+   */
   //  const res = response.data;
   //     if (res.code !== 20000) {
   //       Message({
@@ -56,15 +68,16 @@ service.interceptors.response.use(
   //     } else {
   //       return response.data;
   //     }
-  error => {
-    console.log('err' + error)// for debug
+  (error) => {
+    console.log('err' + error); // for debug
     /*  Message({
       message: error.message,
       type: 'error',
       duration: 5 * 1000
     })
     */
-    return Promise.reject(error)
-  })
+    return Promise.reject(error);
+  }
+);
 
-export default service
+export default service;
